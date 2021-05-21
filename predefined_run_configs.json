@@ -1,0 +1,51 @@
+[
+  {
+    "title": "train",
+    "type": "train",
+    "config": {
+      "lr": 0.001,
+      "epochs": 5,
+      "batch_size": {
+        "val": 4,
+        "train": 4
+      },
+      "input_size": {
+        "max_dim": 256,
+        "min_dim": 256
+      },
+      "gpu_devices": [
+        0
+      ],
+      "dataset_tags": {
+        "val": "val",
+        "train": "train"
+      },
+      "train_layers": "all",
+      "special_classes": {
+        "background": "bg"
+      },
+      "weights_init_type": "transfer_learning"
+    }
+  },
+  {
+    "title": "full_image",
+    "type": "inference",
+    "config": {
+      "model": {
+        "gpu_device": 0,
+        "min_confidence_threshold": 0.0
+      },
+      "mode": {
+        "name": "full_image",
+        "model_classes": {
+          "save_classes": "__all__",
+          "add_suffix": "_maskrcnn"
+        },
+        "model_tags": {
+          "save_names": "__all__",
+          "add_suffix": "_maskrcnn"
+        }
+      }
+    }
+  }
+]

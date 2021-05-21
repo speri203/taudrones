@@ -1,0 +1,183 @@
+{
+  "definitions": {
+    "nonempty_string": {
+      "type": "string",
+      "minLength": 1
+    },
+    "positive_int": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "nonnegative_int": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "positive_float": {
+      "type": "number",
+      "minimum": 0,
+      "exclusiveMinimum": true
+    },
+    "nonnegative_float": {
+      "type": "number",
+      "minimum": 0
+    },
+    "positive_size": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "height",
+        "width"
+      ],
+      "properties": {
+        "height": {
+          "$ref": "#/definitions/positive_int"
+        },
+        "width": {
+          "$ref": "#/definitions/positive_int"
+        }
+      }
+    },
+    "positive_dim_limits": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "min_dim",
+        "max_dim"
+      ],
+      "properties": {
+        "min_dim": {
+          "$ref": "#/definitions/positive_int"
+        },
+        "max_dim": {
+          "$ref": "#/definitions/positive_int"
+        }
+      }
+    },
+    "gpu_devices_list": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/nonnegative_int"
+      },
+      "minItems": 1
+    }
+  },
+  "training_config": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "dataset_tags",
+      "batch_size",
+      "input_size",
+      "special_classes",
+      "epochs",
+      "lr",
+      "weights_init_type",
+      "gpu_devices",
+      "train_layers"
+    ],
+    "properties": {
+      "dataset_tags": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "train",
+          "val"
+        ],
+        "properties": {
+          "train": {
+            "$ref": "#/definitions/nonempty_string"
+          },
+          "val": {
+            "$ref": "#/definitions/nonempty_string"
+          }
+        }
+      },
+      "batch_size": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "train",
+          "val"
+        ],
+        "properties": {
+          "train": {
+            "$ref": "#/definitions/positive_int"
+          },
+          "val": {
+            "$ref": "#/definitions/positive_int"
+          }
+        }
+      },
+      "special_classes": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "background"
+        ],
+        "properties": {
+          "background": {
+            "$ref": "#/definitions/nonempty_string"
+          }
+        }
+      },
+      "input_size": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/positive_dim_limits"
+          }
+        ]
+      },
+      "epochs": {
+        "$ref": "#/definitions/positive_int"
+      },
+      "lr": {
+        "$ref": "#/definitions/positive_float"
+      },
+      "weights_init_type": {
+        "type": "string",
+        "enum": [
+          "transfer_learning",
+          "continue_training"
+        ]
+      },
+      "gpu_devices": {
+        "$ref": "#/definitions/gpu_devices_list"
+      },
+      "train_layers": {
+        "type": "string",
+        "enum": [
+          "all",
+          "3+",
+          "4+",
+          "5+",
+          "heads"
+        ]
+      }
+    }
+  },
+  "inference_config": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "gpu_device"
+    ],
+    "properties": {
+      "gpu_device": {
+        "$ref": "#/definitions/nonnegative_int"
+      },
+      "confidence_tag_name": {
+        "type": "string"
+      },
+      "min_confidence_threshold": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/nonnegative_float"
+          },
+          {
+            "maximum": 1
+          }
+        ]
+      }
+    }
+  }
+}

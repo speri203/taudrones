@@ -1,0 +1,5 @@
+{
+	"title": "Heatloss Mask R-CNN (Keras + TF)",
+	"description": "Arial thermal imagery model Keras+Tensorflow implementation of Mask R-CNN",
+	"type": "architecture"
+}
